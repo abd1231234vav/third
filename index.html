@@ -3,62 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Third Landing Page</title>
+  <title>Third Studio | Home</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="hero">
-    <nav class="nav">
-      <div class="brand">third</div>
-      <button id="themeButton" class="theme-button" type="button">Change Accent</button>
+  <header class="site-header">
+    <a class="brand" href="index.html">Third Studio</a>
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="work.html">Work</a>
+      <a href="contact.html">Contact</a>
     </nav>
-
-    <div class="hero-content">
-      <p class="eyebrow">Simple landing page</p>
-      <h1>Build something clean, fast, and easy to launch.</h1>
-      <p class="hero-text">
-        This starter page uses plain HTML, CSS, and JavaScript to give your new repository
-        a polished first website without any framework setup.
-      </p>
-
-      <div class="hero-actions">
-        <a class="button primary" href="#features">Explore Features</a>
-        <a class="button secondary" href="#contact">Contact</a>
-      </div>
-    </div>
   </header>
 
   <main>
-    <section id="features" class="features">
-      <article class="card">
-        <h2>Fast Setup</h2>
-        <p>Open the files, edit the text, and your landing page is ready in minutes.</p>
+    <section class="hero home-hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Websites for new ideas</p>
+        <h1>Third Studio</h1>
+        <p>
+          We design and build bright, focused websites for projects that need to look real
+          from the first click.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="services.html">See Services</a>
+          <a class="button secondary" href="work.html">View Work</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section intro-grid">
+      <div>
+        <p class="eyebrow">What we do</p>
+        <h2>Clear pages, useful structure, and a launch path that feels manageable.</h2>
+      </div>
+      <p>
+        Third Studio helps new projects explain what they do, show why it matters, and
+        guide visitors toward the next step without making the site feel crowded.
+      </p>
+    </section>
+
+    <section class="section feature-grid">
+      <article class="feature-card">
+        <span class="feature-number">01</span>
+        <h3>Plan</h3>
+        <p>Shape the page sections around the goal, audience, and first action.</p>
       </article>
-      <article class="card">
-        <h2>Modern Style</h2>
-        <p>Soft gradients, bold typography, and strong spacing keep the page looking fresh.</p>
+      <article class="feature-card">
+        <span class="feature-number">02</span>
+        <h3>Design</h3>
+        <p>Use a calm layout, strong spacing, real images, and readable type.</p>
       </article>
-      <article class="card">
-        <h2>Easy Customizing</h2>
-        <p>Use the accent button to preview a different color mood with one click.</p>
+      <article class="feature-card">
+        <span class="feature-number">03</span>
+        <h3>Launch</h3>
+        <p>Keep the code simple enough to edit, publish, and grow later.</p>
       </article>
     </section>
 
-    <section class="showcase">
+    <section class="section split-section">
+      <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=80" alt="Creative desk with laptop and workspace tools">
       <div>
-        <p class="eyebrow">Why this page works</p>
-        <h2>It is simple enough to learn from and clean enough to publish.</h2>
+        <p class="eyebrow">Ready to grow</p>
+        <h2>A small website with a bigger structure.</h2>
+        <p>
+          A complete website gives people a path: learn the story, compare the services,
+          review the work, and get in touch when the timing is right.
+        </p>
+        <a class="text-link" href="about.html">Read about the studio</a>
       </div>
-      <p>
-        This project is a nice starting point for personal sites, product ideas, portfolios,
-        or practice projects. You can keep it minimal or grow it into something bigger later.
-      </p>
     </section>
   </main>
 
-  <footer id="contact" class="footer">
-    <p>Created for the <strong>third</strong> repository.</p>
-    <p class="footer-note">Edit this page and make it your own.</p>
+  <footer class="site-footer">
+    <p>Third Studio</p>
+    <p>Built with HTML, CSS, and JavaScript.</p>
   </footer>
 
   <script src="script.js"></script>

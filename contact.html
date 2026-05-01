@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Third Studio | Contact</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">Third Studio</a>
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="work.html">Work</a>
+      <a href="contact.html" aria-current="page">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <p class="eyebrow">Contact</p>
+      <h1>Tell us what you want to build next.</h1>
+      <p>
+        Share a few details and we will shape the next step together.
+      </p>
+    </section>
+
+    <section class="section contact-layout">
+      <form class="contact-form" id="contactForm">
+        <label>
+          Name
+          <input type="text" name="name" placeholder="Your name" required>
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" placeholder="you@example.com" required>
+        </label>
+        <label>
+          Project Type
+          <select name="project">
+            <option>Website</option>
+            <option>Portfolio</option>
+            <option>Business Page</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>
+          Message
+          <textarea name="message" rows="6" placeholder="Write a short message" required></textarea>
+        </label>
+        <button class="button primary" type="submit">Send Message</button>
+        <p class="form-status" id="formStatus" role="status"></p>
+      </form>
+
+      <aside class="contact-panel">
+        <p class="eyebrow">Details</p>
+        <h2>Start small, then improve every page.</h2>
+        <p>
+          A good project starts with a clear goal, a realistic first version, and a little
+          room to improve after launch.
+        </p>
+        <a class="text-link" href="mailto:hello@example.com">hello@example.com</a>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Third Studio</p>
+    <p>Contact page ready.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

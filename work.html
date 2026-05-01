@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Third Studio | Work</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">Third Studio</a>
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="work.html" aria-current="page">Work</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <p class="eyebrow">Work</p>
+      <h1>Sample projects for a complete site.</h1>
+      <p>
+        A few example directions for brands, launches, and web projects.
+      </p>
+    </section>
+
+    <section class="section filter-bar" aria-label="Project filters">
+      <button class="filter-button active" type="button" data-filter="all">All</button>
+      <button class="filter-button" type="button" data-filter="brand">Brand</button>
+      <button class="filter-button" type="button" data-filter="web">Web</button>
+      <button class="filter-button" type="button" data-filter="launch">Launch</button>
+    </section>
+
+    <section class="section project-grid">
+      <article class="project-card" data-category="web">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80" alt="Website analytics dashboard on a laptop">
+        <div>
+          <p class="eyebrow">Web</p>
+          <h2>Bright Dashboard</h2>
+          <p>A clean homepage concept for a digital product.</p>
+        </div>
+      </article>
+      <article class="project-card" data-category="brand">
+        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="Modern outdoor brand space with seating">
+        <div>
+          <p class="eyebrow">Brand</p>
+          <h2>Local Place</h2>
+          <p>A warm website direction for a neighborhood business.</p>
+        </div>
+      </article>
+      <article class="project-card" data-category="launch">
+        <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=80" alt="Team working together near laptops">
+        <div>
+          <p class="eyebrow">Launch</p>
+          <h2>First Release</h2>
+          <p>A starter site prepared for GitHub publishing.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Third Studio</p>
+    <p>Portfolio structure included.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

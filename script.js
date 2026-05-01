@@ -1,22 +1,42 @@
-const accents = [
-  ["#d97706", "#9a3412"],
-  ["#0f766e", "#115e59"],
-  ["#2563eb", "#1d4ed8"],
-  ["#be185d", "#9d174d"]
-];
+const navToggle = document.querySelector(".nav-toggle");
+const siteNav = document.querySelector(".site-nav");
 
-const themeButton = document.getElementById("themeButton");
-let accentIndex = 0;
+if (navToggle && siteNav) {
+  navToggle.addEventListener("click", () => {
+    const isOpen = siteNav.classList.toggle("open");
+    navToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+}
 
-themeButton.addEventListener("click", () => {
-  accentIndex = (accentIndex + 1) % accents.length;
-  const [accent, accentDark] = accents[accentIndex];
+const filterButtons = document.querySelectorAll(".filter-button");
+const projectCards = document.querySelectorAll(".project-card");
 
-  document.documentElement.style.setProperty("--accent", accent);
-  document.documentElement.style.setProperty("--accent-dark", accentDark);
-  themeButton.textContent = "Accent Updated";
+filterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const filter = button.dataset.filter;
 
-  window.setTimeout(() => {
-    themeButton.textContent = "Change Accent";
-  }, 900);
+    filterButtons.forEach((item) => item.classList.remove("active"));
+    button.classList.add("active");
+
+    projectCards.forEach((card) => {
+      card.hidden = filter !== "all" && card.dataset.category !== filter;
+    });
+  });
 });
+
+const contactForm = document.getElementById("contactForm");
+const formStatus = document.getElementById("formStatus");
+
+if (contactForm && formStatus) {
+  contactForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const formData = new FormData(contactForm);
+    const name = String(formData.get("name") || "").trim();
+
+    formStatus.textContent = name
+      ? `Thanks, ${name}. Your message is ready.`
+      : "Thanks. Your message is ready.";
+
+    contactForm.reset();
+  });
+}
