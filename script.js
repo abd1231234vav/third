@@ -227,6 +227,7 @@ if (contactForm && formStatus) {
           "apikey": supabasePublishableKey,
           "Authorization": `Bearer ${supabasePublishableKey}`,
           "Content-Type": "application/json",
+          "X-User-Info-Id": storedVisitor.id,
           "Prefer": "return=minimal"
         },
         body: JSON.stringify({
