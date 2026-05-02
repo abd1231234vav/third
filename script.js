@@ -46,6 +46,15 @@ function validateVisitor(visitor) {
   return "";
 }
 
+function openWebsite() {
+  document.body.classList.remove("needs-access");
+  document.body.classList.add("has-access");
+  if (accessScreen) {
+    accessScreen.hidden = true;
+    accessScreen.style.display = "none";
+  }
+}
+
 const hasAccess = Boolean(getStoredVisitor());
 
 if (!hasAccess && currentPage !== "index.html") {
@@ -53,10 +62,7 @@ if (!hasAccess && currentPage !== "index.html") {
 }
 
 if (hasAccess) {
-  document.body.classList.remove("needs-access");
-  if (accessScreen) {
-    accessScreen.hidden = true;
-  }
+  openWebsite();
 }
 
 if (accessForm) {
@@ -117,6 +123,7 @@ if (accessForm) {
         ...visitor,
         savedAt: new Date().toISOString()
       }));
+      openWebsite();
       window.location.href = "index.html";
     } catch (error) {
       if (accessStatus) {

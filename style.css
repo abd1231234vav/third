@@ -32,6 +32,10 @@ body.needs-access .site-footer {
   display: none;
 }
 
+body.has-access .access-screen {
+  display: none !important;
+}
+
 img {
   display: block;
   max-width: 100%;
