@@ -1,5 +1,5 @@
-const accessKey = "thirdStudioVisitorRequiredInfo";
-const accessCooldownKey = "thirdStudioVisitorLastSubmit";
+const accessKey = "thirdStudioVisitorRequiredInfoV2";
+const accessCooldownKey = "thirdStudioVisitorLastSubmitV2";
 const accessCooldownMs = 10000;
 const supabaseUrl = "https://urncjwmoosmpogasfmba.supabase.co";
 const supabasePublishableKey = "sb_publishable_n7weg275d-n7vtru0M_lfQ_aVK5U_Yb";
