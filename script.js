@@ -3,6 +3,7 @@ const accessCooldownKey = "thirdStudioVisitorLastSubmitV2";
 const accessCooldownMs = 10000;
 const supabaseUrl = "https://urncjwmoosmpogasfmba.supabase.co";
 const supabasePublishableKey = "sb_publishable_n7weg275d-n7vtru0M_lfQ_aVK5U_Yb";
+const userInfoTableUrl = `${supabaseUrl}/rest/v1/USER%20INFO`;
 const currentPage = window.location.pathname.split("/").pop() || "index.html";
 const accessForm = document.getElementById("accessForm");
 const accessScreen = document.getElementById("accessScreen");
@@ -13,6 +14,7 @@ function getStoredVisitor() {
     const visitor = JSON.parse(localStorage.getItem(accessKey) || "null");
     if (
       visitor &&
+      typeof visitor.id === "string" &&
       typeof visitor.name === "string" &&
       Number.isInteger(visitor.age) &&
       typeof visitor.email === "string"
@@ -47,10 +49,6 @@ function validateVisitor(visitor) {
 }
 
 function validateContactMessage(message) {
-  if (message.name.length < 1 || message.name.length > 120) {
-    return "Please enter your name.";
-  }
-
   if (!isValidEmail(message.email)) {
     return "Please enter a valid email address.";
   }
@@ -122,7 +120,8 @@ if (accessForm) {
     }
 
     try {
-      const response = await fetch(`${supabaseUrl}/rest/v1/website_visitors`, {
+      const userId = crypto.randomUUID();
+      const response = await fetch(userInfoTableUrl, {
         method: "POST",
         headers: {
           "apikey": supabasePublishableKey,
@@ -130,7 +129,12 @@ if (accessForm) {
           "Content-Type": "application/json",
           "Prefer": "return=minimal"
         },
-        body: JSON.stringify(visitor)
+        body: JSON.stringify({
+          id: userId,
+          name: visitor.name,
+          age: visitor.age,
+          email: visitor.email
+        })
       });
 
       localStorage.setItem(accessCooldownKey, String(Date.now()));
@@ -140,6 +144,7 @@ if (accessForm) {
       }
 
       localStorage.setItem(accessKey, JSON.stringify({
+        id: userId,
         ...visitor,
         savedAt: new Date().toISOString()
       }));
@@ -189,9 +194,14 @@ const formStatus = document.getElementById("formStatus");
 if (contactForm && formStatus) {
   contactForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+    const storedVisitor = getStoredVisitor();
+    if (!storedVisitor) {
+      window.location.href = "index.html";
+      return;
+    }
+
     const formData = new FormData(contactForm);
     const contactMessage = {
-      name: String(formData.get("name") || "").trim(),
       email: String(formData.get("email") || "").trim(),
       project_type: String(formData.get("project") || "").trim(),
       message: String(formData.get("message") || "").trim()
@@ -211,24 +221,35 @@ if (contactForm && formStatus) {
     formStatus.textContent = "Sending your message...";
 
     try {
-      const response = await fetch(`${supabaseUrl}/rest/v1/contact_messages`, {
-        method: "POST",
+      const response = await fetch(`${userInfoTableUrl}?id=eq.${encodeURIComponent(storedVisitor.id)}`, {
+        method: "PATCH",
         headers: {
           "apikey": supabasePublishableKey,
           "Authorization": `Bearer ${supabasePublishableKey}`,
           "Content-Type": "application/json",
           "Prefer": "return=minimal"
         },
-        body: JSON.stringify(contactMessage)
+        body: JSON.stringify({
+          email: contactMessage.email,
+          project_type: contactMessage.project_type,
+          message: contactMessage.message,
+          contact_submitted_at: new Date().toISOString()
+        })
       });
 
       if (!response.ok) {
         throw new Error("Supabase save failed");
       }
 
-      formStatus.textContent = contactMessage.name
-        ? `Thanks, ${contactMessage.name}. Your message was saved.`
-        : "Thanks. Your message was saved.";
+      localStorage.setItem(accessKey, JSON.stringify({
+        ...storedVisitor,
+        email: contactMessage.email,
+        project_type: contactMessage.project_type,
+        message: contactMessage.message,
+        contactSubmittedAt: new Date().toISOString()
+      }));
+
+      formStatus.textContent = "Thanks. Your message was saved.";
 
       contactForm.reset();
     } catch (error) {
