@@ -6,7 +6,33 @@
   <title>Third Studio | Home</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="needs-access">
+  <section class="access-screen" id="accessScreen" aria-labelledby="accessTitle">
+    <div class="access-panel">
+      <p class="eyebrow">Start here</p>
+      <h1 id="accessTitle">Enter your details to open Third Studio.</h1>
+      <p>
+        Add your name, age, and email first. After that, the main website will open.
+      </p>
+      <form class="access-form" id="accessForm">
+        <label>
+          Name
+          <input type="text" name="name" placeholder="Your name" autocomplete="name" required>
+        </label>
+        <label>
+          Age
+          <input type="number" name="age" placeholder="Your age" min="1" max="120" required>
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+        </label>
+        <button class="button primary" type="submit">Enter Website</button>
+        <p class="access-status" id="accessStatus" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
   <header class="site-header">
     <a class="brand" href="index.html">Third Studio</a>
     <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
@@ -23,7 +49,7 @@
     </nav>
   </header>
 
-  <main>
+  <main class="site-main">
     <section class="hero home-hero">
       <div class="hero-copy">
         <p class="eyebrow">Websites for new ideas</p>
