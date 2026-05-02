@@ -46,6 +46,26 @@ function validateVisitor(visitor) {
   return "";
 }
 
+function validateContactMessage(message) {
+  if (message.name.length < 1 || message.name.length > 120) {
+    return "Please enter your name.";
+  }
+
+  if (!isValidEmail(message.email)) {
+    return "Please enter a valid email address.";
+  }
+
+  if (!["Website", "Portfolio", "Business Page", "Other"].includes(message.project_type)) {
+    return "Please choose a project type.";
+  }
+
+  if (message.message.length < 1 || message.message.length > 2000) {
+    return "Please write a message between 1 and 2000 letters.";
+  }
+
+  return "";
+}
+
 function openWebsite() {
   document.body.classList.remove("needs-access");
   document.body.classList.add("has-access");
@@ -167,15 +187,57 @@ const contactForm = document.getElementById("contactForm");
 const formStatus = document.getElementById("formStatus");
 
 if (contactForm && formStatus) {
-  contactForm.addEventListener("submit", (event) => {
+  contactForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(contactForm);
-    const name = String(formData.get("name") || "").trim();
+    const contactMessage = {
+      name: String(formData.get("name") || "").trim(),
+      email: String(formData.get("email") || "").trim(),
+      project_type: String(formData.get("project") || "").trim(),
+      message: String(formData.get("message") || "").trim()
+    };
+    const validationError = validateContactMessage(contactMessage);
 
-    formStatus.textContent = name
-      ? `Thanks, ${name}. Your message is ready.`
-      : "Thanks. Your message is ready.";
+    if (validationError) {
+      formStatus.textContent = validationError;
+      return;
+    }
 
-    contactForm.reset();
+    const submitButton = contactForm.querySelector("button[type='submit']");
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending...";
+    }
+    formStatus.textContent = "Sending your message...";
+
+    try {
+      const response = await fetch(`${supabaseUrl}/rest/v1/contact_messages`, {
+        method: "POST",
+        headers: {
+          "apikey": supabasePublishableKey,
+          "Authorization": `Bearer ${supabasePublishableKey}`,
+          "Content-Type": "application/json",
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify(contactMessage)
+      });
+
+      if (!response.ok) {
+        throw new Error("Supabase save failed");
+      }
+
+      formStatus.textContent = contactMessage.name
+        ? `Thanks, ${contactMessage.name}. Your message was saved.`
+        : "Thanks. Your message was saved.";
+
+      contactForm.reset();
+    } catch (error) {
+      formStatus.textContent = "Could not send your message. Please try again.";
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = "Send Message";
+      }
+    }
   });
 }
