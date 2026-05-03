@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://images.unsplash.com data:; connect-src 'self' https://urncjwmoosmpogasfmba.supabase.co; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://images.unsplash.com data: blob:; connect-src 'self' https://urncjwmoosmpogasfmba.supabase.co; base-uri 'self'; form-action 'self'">
   <title>Third Studio | Home</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -29,6 +29,10 @@
           Email
           <input type="email" name="email" placeholder="you@example.com" autocomplete="email" required>
         </label>
+        <label>
+          Profile Image
+          <input type="file" name="profile_image" accept="image/png,image/jpeg,image/webp" required>
+        </label>
         <button class="button primary" type="submit">Enter Website</button>
         <p class="access-status" id="accessStatus" aria-live="polite"></p>
       </form>
@@ -49,6 +53,10 @@
       <a href="work.html">Work</a>
       <a href="contact.html">Contact</a>
     </nav>
+    <div class="visitor-profile" id="visitorProfile" hidden>
+      <img id="visitorImage" alt="Your profile">
+      <span id="visitorName"></span>
+    </div>
   </header>
 
   <main class="site-main">

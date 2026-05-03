@@ -4,10 +4,14 @@ const accessCooldownMs = 10000;
 const supabaseUrl = "https://urncjwmoosmpogasfmba.supabase.co";
 const supabasePublishableKey = "sb_publishable_n7weg275d-n7vtru0M_lfQ_aVK5U_Yb";
 const userInfoTableUrl = `${supabaseUrl}/rest/v1/USER%20INFO`;
+const profileBucket = "profile-images";
 const currentPage = window.location.pathname.split("/").pop() || "index.html";
 const accessForm = document.getElementById("accessForm");
 const accessScreen = document.getElementById("accessScreen");
 const accessStatus = document.getElementById("accessStatus");
+const visitorProfile = document.getElementById("visitorProfile");
+const visitorImage = document.getElementById("visitorImage");
+const visitorName = document.getElementById("visitorName");
 
 function getStoredVisitor() {
   try {
@@ -17,7 +21,8 @@ function getStoredVisitor() {
       typeof visitor.id === "string" &&
       typeof visitor.name === "string" &&
       Number.isInteger(visitor.age) &&
-      typeof visitor.email === "string"
+      typeof visitor.email === "string" &&
+      typeof visitor.profileImagePath === "string"
     ) {
       return visitor;
     }
@@ -48,6 +53,22 @@ function validateVisitor(visitor) {
   return "";
 }
 
+function validateProfileImage(file) {
+  if (!file || !file.size) {
+    return "Please choose a profile image.";
+  }
+
+  if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+    return "Please choose a JPG, PNG, or WEBP image.";
+  }
+
+  if (file.size > 2 * 1024 * 1024) {
+    return "Please choose an image smaller than 2 MB.";
+  }
+
+  return "";
+}
+
 function validateContactMessage(message) {
   if (!isValidEmail(message.email)) {
     return "Please enter a valid email address.";
@@ -73,6 +94,61 @@ function openWebsite() {
   }
 }
 
+async function uploadProfileImage(userId, file) {
+  const extension = file.type === "image/png"
+    ? "png"
+    : file.type === "image/webp"
+      ? "webp"
+      : "jpg";
+  const imagePath = `${userId}/profile.${extension}`;
+  const response = await fetch(`${supabaseUrl}/storage/v1/object/${profileBucket}/${imagePath}`, {
+    method: "POST",
+    headers: {
+      "apikey": supabasePublishableKey,
+      "Authorization": `Bearer ${supabasePublishableKey}`,
+      "Content-Type": file.type,
+      "X-User-Info-Id": userId,
+      "x-upsert": "true"
+    },
+    body: file
+  });
+
+  if (!response.ok) {
+    throw new Error("Profile image upload failed");
+  }
+
+  return imagePath;
+}
+
+async function loadProfileImage(visitor) {
+  if (!visitorProfile || !visitorImage || !visitor.profileImagePath) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`${supabaseUrl}/storage/v1/object/${profileBucket}/${visitor.profileImagePath}`, {
+      headers: {
+        "apikey": supabasePublishableKey,
+        "Authorization": `Bearer ${supabasePublishableKey}`,
+        "X-User-Info-Id": visitor.id
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error("Profile image load failed");
+    }
+
+    const blob = await response.blob();
+    visitorImage.src = URL.createObjectURL(blob);
+    if (visitorName) {
+      visitorName.textContent = visitor.name;
+    }
+    visitorProfile.hidden = false;
+  } catch (error) {
+    visitorProfile.hidden = true;
+  }
+}
+
 const hasAccess = Boolean(getStoredVisitor());
 
 if (!hasAccess && currentPage !== "index.html") {
@@ -81,6 +157,7 @@ if (!hasAccess && currentPage !== "index.html") {
 
 if (hasAccess) {
   openWebsite();
+  loadProfileImage(getStoredVisitor());
 }
 
 if (accessForm) {
@@ -92,11 +169,13 @@ if (accessForm) {
       age: Number(formData.get("age")),
       email: String(formData.get("email") || "").trim()
     };
+    const profileImage = formData.get("profile_image");
     const validationError = validateVisitor(visitor);
+    const imageError = validateProfileImage(profileImage);
 
-    if (validationError) {
+    if (validationError || imageError) {
       if (accessStatus) {
-        accessStatus.textContent = validationError;
+        accessStatus.textContent = validationError || imageError;
       }
       return;
     }
@@ -121,6 +200,7 @@ if (accessForm) {
 
     try {
       const userId = crypto.randomUUID();
+      const profileImagePath = await uploadProfileImage(userId, profileImage);
       const response = await fetch(userInfoTableUrl, {
         method: "POST",
         headers: {
@@ -133,7 +213,8 @@ if (accessForm) {
           id: userId,
           name: visitor.name,
           age: visitor.age,
-          email: visitor.email
+          email: visitor.email,
+          profile_image_path: profileImagePath
         })
       });
 
@@ -146,9 +227,11 @@ if (accessForm) {
       localStorage.setItem(accessKey, JSON.stringify({
         id: userId,
         ...visitor,
+        profileImagePath,
         savedAt: new Date().toISOString()
       }));
       openWebsite();
+      loadProfileImage(getStoredVisitor());
       window.location.href = "index.html";
     } catch (error) {
       if (accessStatus) {

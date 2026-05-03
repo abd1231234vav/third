@@ -112,6 +112,23 @@ a {
   background: rgba(255, 255, 255, 0.1);
 }
 
+.access-form input[type="file"] {
+  color: rgba(255, 255, 255, 0.78);
+  cursor: pointer;
+}
+
+.access-form input[type="file"]::file-selector-button {
+  margin-right: 12px;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 6px;
+  color: #ffffff;
+  background: var(--accent);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
 .access-form input::placeholder {
   color: rgba(255, 255, 255, 0.58);
 }
@@ -147,6 +164,34 @@ a {
 .site-nav a[aria-current="page"] {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.12);
+}
+
+.visitor-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 6px 10px 6px 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.visitor-profile img {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.52);
+}
+
+.visitor-profile span {
+  max-width: 140px;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .nav-toggle {
